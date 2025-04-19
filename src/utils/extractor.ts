@@ -13,7 +13,7 @@ export function extractClassesFromHtml(html: string): ExtractedClassesType {
         const classes: ExtractedClassesType = {};
 
         // Find all elements with classes
-        $('[class]').each((index, element) => {
+        $('[class]').each((_, element) => {
             const classNames = $(element).attr('class')?.split(/\s+/).filter(Boolean) || [];
 
             for (const className of classNames) {

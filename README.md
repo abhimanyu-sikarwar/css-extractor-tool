@@ -34,12 +34,12 @@ A React application that helps developers extract only the CSS they need from HT
 
 3. Start the development server:
    ```bash
-   npm run start
+   npm run dev
    # or
-   yarn start
+   yarn dev
    ```
 
-This will start both the React frontend (default: port 3000).
+This will start both the React frontend (default: port 5173).
 
 ## How to Use
 
@@ -57,26 +57,61 @@ This will start both the React frontend (default: port 3000).
 3. **Media Query Support**: Media queries are handled specially to ensure responsive styles are preserved
 4. **Animation Support**: Keyframe animations are included automatically
 
-## Deployment
+## React + TypeScript + Vite
 
-To deploy the application:
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-1. Build the React app:
-   ```bash
-   npm run build
-   # or
-   yarn build
-   ```
+Currently, two official plugins are available:
 
-2. The Express server is configured to serve the built React app in production.
-   Start the server:
-   ```bash
-   npm run server
-   # or
-   yarn server
-   ```
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-3. The app will be available at the configured port (default: 5000)
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
+
 
 ## Technologies Used
 
