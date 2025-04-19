@@ -5,6 +5,8 @@ import { ClassesSectionProps } from '../types/types';
 const ClassesSection: React.FC<ClassesSectionProps> = ({
     extractedClasses,
     onExtractCss,
+    cssInput,
+    setCssInput,
     loading,
     cssInputEmpty
 }) => {
@@ -32,6 +34,16 @@ const ClassesSection: React.FC<ClassesSectionProps> = ({
                     {loading ? 'Extracting...' : 'Extract CSS for These Classes'}
                 </button>
             )}
+            <div className="input-container">
+                <label htmlFor="css-input">Paste your CSS:</label>
+                <textarea
+                    id="css-input"
+                    value={cssInput}
+                    onChange={(e) => setCssInput(e.target.value)}
+                    placeholder="Paste your CSS here..."
+                    rows={10}
+                />
+            </div>
         </div>
     );
 };

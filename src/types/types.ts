@@ -23,6 +23,8 @@ export interface InputSectionProps {
 export interface ClassesSectionProps {
     extractedClasses: ExtractedClassesType;
     onExtractCss: () => void;
+    cssInput: string;
+    setCssInput: React.Dispatch<React.SetStateAction<string>>;
     loading: boolean;
     cssInputEmpty: boolean;
 }

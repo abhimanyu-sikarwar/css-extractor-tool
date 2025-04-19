@@ -101,6 +101,8 @@ const App: React.FC = () => {
           extractedClasses={extractedClasses}
           onExtractCss={handleExtractCss}
           loading={loading}
+          cssInput={cssInput}
+          setCssInput={setCssInput}
           cssInputEmpty={!cssInput.trim()}
         />
       )}
