@@ -1,19 +1,20 @@
-// utils/extractor.js
+// utils/extractor.ts
 import * as cheerio from 'cheerio';
+import { ExtractedClassesType } from '../types/types';
 
 /**
  * Extract classes from HTML string
- * @param {string} html - HTML content
- * @returns {Object} - Object with class names as keys
+ * @param html - HTML content
+ * @returns Object with class names as keys
  */
-export function extractClassesFromHtml(html) {
+export function extractClassesFromHtml(html: string): ExtractedClassesType {
     try {
         const $ = cheerio.load(html);
-        const classes = {};
+        const classes: ExtractedClassesType = {};
 
         // Find all elements with classes
         $('[class]').each((index, element) => {
-            const classNames = $(element).attr('class').split(/\s+/).filter(Boolean);
+            const classNames = $(element).attr('class')?.split(/\s+/).filter(Boolean) || [];
 
             for (const className of classNames) {
                 if (!classes[className]) {
@@ -31,11 +32,11 @@ export function extractClassesFromHtml(html) {
 
 /**
  * Extract CSS rules for specified classes
- * @param {string} cssContent - CSS content
- * @param {Object} classNames - Object with class names as keys
- * @returns {string} - Extracted CSS
+ * @param cssContent - CSS content
+ * @param classNames - Object with class names as keys
+ * @returns Extracted CSS
  */
-export function extractCssFromClasses(cssContent, classNames) {
+export function extractCssFromClasses(cssContent: string, classNames: ExtractedClassesType): string {
     try {
         let extractedRules = '';
         let inComment = false;
@@ -126,11 +127,11 @@ export function extractCssFromClasses(cssContent, classNames) {
 
 /**
  * Extract rules from a media query that match our class names
- * @param {string} mediaQueryText - Complete media query text
- * @param {Object} classNames - Object with class names as keys
- * @return {string} - Extracted media query with matching rules only
+ * @param mediaQueryText - Complete media query text
+ * @param classNames - Object with class names as keys
+ * @return Extracted media query with matching rules only
  */
-function extractMediaQueryRules(mediaQueryText, classNames) {
+function extractMediaQueryRules(mediaQueryText: string, classNames: ExtractedClassesType): string | null {
     // Check if it's a keyframes animation (which we should include completely)
     if (mediaQueryText.trim().startsWith('@keyframes')) {
         return mediaQueryText;
@@ -150,7 +151,7 @@ function extractMediaQueryRules(mediaQueryText, classNames) {
     if (!mediaQueryContent) return null;
 
     // Split the media query content into individual rules
-    let rules = [];
+    let rules: string[] = [];
     let currentRule = '';
     let braceCount = 0;
 
@@ -192,11 +193,11 @@ function extractMediaQueryRules(mediaQueryText, classNames) {
 
 /**
  * Check if a CSS rule should be included based on class names
- * @param {string} rule - CSS rule text
- * @param {Object} classNames - Object with class names as keys
- * @return {boolean} - Whether to include the rule
+ * @param rule - CSS rule text
+ * @param classNames - Object with class names as keys
+ * @return Whether to include the rule
  */
-function shouldIncludeRule(rule, classNames) {
+function shouldIncludeRule(rule: string, classNames: ExtractedClassesType): boolean {
     // Always include keyframes and font declarations
     if (rule.includes('@keyframes') || rule.includes('@font-face')) {
         return true;
@@ -229,11 +230,11 @@ function shouldIncludeRule(rule, classNames) {
 
 /**
  * Extract class names from a CSS selector
- * @param {string} selector - CSS selector
- * @return {Array} - Array of class names found in the selector
+ * @param selector - CSS selector
+ * @return Array of class names found in the selector
  */
-function extractClassNamesFromSelector(selector) {
-    const classNames = [];
+function extractClassNamesFromSelector(selector: string): string[] {
+    const classNames: string[] = [];
     const classRegex = /\.([\w-]+)/g;
     let match;
 
